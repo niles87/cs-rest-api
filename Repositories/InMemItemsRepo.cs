@@ -16,7 +16,21 @@ namespace GameServices.Repositories {
     }
 
     public Item GetItem(Guid id) {
-      return items.Where(item => item.Id == id).SingleOrDefault();
+      return items.SingleOrDefault(item => item.Id == id);
+    }
+
+    public void CreateItem(Item item) {
+      items.Add(item);
+    }
+
+    public void UpdateItem(Item item) {
+      var index = items.FindIndex(exsitingItem => exsitingItem.Id == item.Id);
+      items[index] = item;
+    }
+
+    public void DeleteItem(Guid id) {
+      var index = items.FindIndex((item) => item.Id == id);
+      items.RemoveAt(index);
     }
   }
 }
