@@ -2,8 +2,8 @@
 
 namespace GameServices.Repositories {
   public interface IInMemUserRepo {
-    void CreateUser(User user);
-    void DeleteUser(string email, string password);
-    User? GetUser(string email, string password);
+    Task CreateUserAsync(User user);
+    Task DeleteUserAsync(string email, string password);
+    Task<User?> GetUserAsync(string email, string password);
   }
 }

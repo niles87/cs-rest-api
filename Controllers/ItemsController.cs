@@ -16,16 +16,16 @@ namespace GameServices.Controllers {
 
     // GET /api/items
     [HttpGet]
-    public IEnumerable<ItemDto> GetItems() {
-      var items = repo.GetItems().Select(item => item.AsDto());
+    public async Task<IEnumerable<ItemDto>> GetItemsAsync() {
+      var items = (await repo.GetItemsAsync()).Select(item => item.AsDto());
 
       return items;
     }
 
     // GET /api/items/:id
     [HttpGet("{id}")]
-    public ActionResult<ItemDto> GetItem(Guid id) {
-      var item = repo.GetItem(id);
+    public async Task<ActionResult<ItemDto>> GetItemAsync(Guid id) {
+      var item = await repo.GetItemAsync(id);
 
       if ( item is null ) {
         return NotFound();
@@ -36,7 +36,7 @@ namespace GameServices.Controllers {
 
     // Post /api/items
     [HttpPost]
-    public ActionResult<ItemDto> CreateItem(CreateItemDto item) {
+    public async Task<ActionResult<ItemDto>> CreateItemAsync(CreateItemDto item) {
       Item newItem = new() {
         Id = Guid.NewGuid(),
         Name = item.Name,
@@ -44,15 +44,15 @@ namespace GameServices.Controllers {
         CreatedDate = DateTimeOffset.Now,
       };
 
-      repo.CreateItem(newItem);
+      await repo.CreateItemAsync(newItem);
 
-      return CreatedAtAction(nameof(GetItem), new { id = newItem.Id }, newItem.AsDto());
+      return CreatedAtAction(nameof(GetItemAsync), new { id = newItem.Id }, newItem.AsDto());
     }
 
     // PUT /api/items/:id
     [HttpPut("{id}")]
-    public ActionResult UpdateItem(Guid id, UpdateItemDto item) {
-      var existingItem = repo.GetItem(id);
+    public async Task<ActionResult> UpdateItemAsync(Guid id, UpdateItemDto item) {
+      var existingItem = await repo.GetItemAsync(id);
 
       if ( existingItem is null ) {
         return NotFound();
@@ -63,21 +63,21 @@ namespace GameServices.Controllers {
         Price = item.Price
       };
 
-      repo.UpdateItem(updatedItem);
+      await repo.UpdateItemAsync(updatedItem);
 
       return NoContent();
     }
 
     // DELETE /api/items/:id
     [HttpDelete("{id}")]
-    public ActionResult DeleteItem(Guid id) {
-      var item = repo.GetItem(id);
+    public async Task<ActionResult> DeleteItemAsync(Guid id) {
+      var item = await repo.GetItemAsync(id);
 
       if ( item is null ) {
         return NotFound();
       }
 
-      repo.DeleteItem(id);
+      await repo.DeleteItemAsync(id);
 
       return NoContent();
     }

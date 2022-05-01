@@ -17,7 +17,7 @@ namespace GameServices.Controllers {
 
     // POST /api/user
     [HttpPost]
-    public ActionResult<UserDto> CreateUser(CreateUserDto user) {
+    public async Task<ActionResult<UserDto>> CreateUserAsync(CreateUserDto user) {
       User newUser = new() {
         Id = Guid.NewGuid(),
         Username = user.Username,
@@ -26,15 +26,15 @@ namespace GameServices.Controllers {
         JoinedDate = DateTimeOffset.Now,
       };
 
-      repo.CreateUser(newUser);
+      await repo.CreateUserAsync(newUser);
 
-      return CreatedAtAction(nameof(Login), new { email = newUser.Email, password = user.Password }, newUser.AsDto());
+      return CreatedAtAction(nameof(LoginAsync), new { email = newUser.Email, password = user.Password }, newUser.AsDto());
     }
 
     [Route("/api/user/login")]
     [HttpPost]
-    public ActionResult<UserDto> Login(LoginUserDto user) {
-      User? existingUser = repo.GetUser(user.Email, user.Password);
+    public async Task<ActionResult<UserDto>> LoginAsync(LoginUserDto user) {
+      User? existingUser = await repo.GetUserAsync(user.Email, user.Password);
 
       if ( existingUser == null ) {
         return BadRequest();

@@ -9,39 +9,37 @@ namespace GameServices.Repositories {
       new User() { Id = Guid.NewGuid(), Username = "Barry", Email = "barry@email.com", Password = PasswordHash.HashPassword("Password"), JoinedDate = DateTimeOffset.UtcNow },
     };
 
-    public void CreateUser(User user) {
+    public async Task CreateUserAsync(User user) {
       users.Add(user);
+      await Task.CompletedTask;
     }
 
-    public User? GetUser(string email, string password) {
-      User? currentUser = GetUserByEmail(email);
-
-      if ( currentUser is null )
-        return null;
+    public async Task<User?> GetUserAsync(string email, string password) {
+      User? currentUser = await GetUserByEmailAsync(email);
 
       if ( PasswordHash.MatchHash(password, currentUser.Password) )
-        return currentUser;
+        return await Task.FromResult(currentUser);
 
-      return null;
+      return await Task.FromResult(currentUser);
     }
 
-    public void DeleteUser(string email, string password) {
-      User? currentUser = GetUserByEmail(email);
+    public async Task DeleteUserAsync(string email, string password) {
+      User? currentUser = await GetUserByEmailAsync(email);
 
       if ( currentUser is null ) {
         Console.WriteLine("No user found");
+        await Task.CompletedTask;
         return;
       }
 
       if ( PasswordHash.MatchHash(password, currentUser.Password) )
         users.Remove(currentUser);
+      await Task.CompletedTask;
     }
 
-    private User? GetUserByEmail(string email) {
+    private async Task<User?> GetUserByEmailAsync(string email) {
       User? user = users.FirstOrDefault(user => user.Email == email);
-      if ( user == null )
-        return null;
-      return user;
+      return await Task.FromResult(user);
     }
   }
 }

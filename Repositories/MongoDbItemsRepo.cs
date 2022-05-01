@@ -6,7 +6,7 @@ namespace GameServices.Repositories {
 
   public class MongoDbItemsRepo : IInMemItemsRepo {
 
-    private const string databaseName = "catalog";
+    private const string databaseName = "gameservices";
     private const string collectionName = "items";
 
     private readonly IMongoCollection<Item> itemCollection;
@@ -17,28 +17,28 @@ namespace GameServices.Repositories {
       itemCollection = database.GetCollection<Item>(collectionName);
     }
 
-    public void CreateItem(Item item) {
-      itemCollection.InsertOne(item);
+    public async Task CreateItemAsync(Item item) {
+      await itemCollection.InsertOneAsync(item);
     }
 
-    public void DeleteItem(Guid id) {
+    public async Task DeleteItemAsync(Guid id) {
       var filter = filterBuilder.Eq("_id", id);
-      itemCollection.DeleteOne(filter);
+      await itemCollection.DeleteOneAsync(filter);
     }
 
-    public Item GetItem(Guid id) {
+    public async Task<Item> GetItemAsync(Guid id) {
       var filter = filterBuilder.Eq("_id", id);
-      return itemCollection.Find(filter).SingleOrDefault();
+      return await itemCollection.Find(filter).SingleOrDefaultAsync();
     }
 
-    public IEnumerable<Item> GetItems() {
-      return itemCollection.Find(new BsonDocument()).ToList();
+    public async Task<IEnumerable<Item>> GetItemsAsync() {
+      return await itemCollection.Find(new BsonDocument()).ToListAsync();
     }
 
-    public void UpdateItem(Item item) {
+    public async Task UpdateItemAsync(Item item) {
       var filter = filterBuilder.Eq("_id", item.Id);
 
-      itemCollection.ReplaceOne(filter, item);
+      await itemCollection.ReplaceOneAsync(filter, item);
     }
 
   }
