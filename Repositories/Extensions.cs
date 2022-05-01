@@ -11,5 +11,14 @@ namespace GameServices {
         CreatedDate = item.CreatedDate,
       };
     }
+
+    public static UserDto AsDto(this User user) {
+      return new UserDto {
+        Id = user.Id,
+        Username = user.Username,
+        Email = user.Email,
+        JoinedDate = user.JoinedDate,
+      };
+    }
   }
 }
