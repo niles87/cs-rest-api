@@ -3,8 +3,10 @@
 namespace GameServices.Utilities {
   public static class PasswordHash {
     public static string HashPassword(string password) {
-      byte[] salt;
-      new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+      byte[] salt = new byte[16];
+      Random random = new();
+      random.NextBytes(salt);
+      //new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]); // obsolete method for generating random bytes
 
       var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
       byte[] hash = pbkdf2.GetBytes(20);
