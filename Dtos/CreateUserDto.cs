@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GameServices.Dtos {
+namespace GameServices.Dtos;
 
   public record CreateUserDto {
     [Required]
@@ -14,4 +14,3 @@ namespace GameServices.Dtos {
     public string Email { get; init; }
 
   }
-}

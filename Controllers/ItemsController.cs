@@ -3,7 +3,7 @@ using GameServices.Repositories;
 using GameServices.Dtos;
 using GameServices.Entities;
 
-namespace GameServices.Controllers {
+namespace GameServices.Controllers;
   [ApiController]
   [Route("api/items")]
   public class ItemsController : Controller {
@@ -82,4 +82,4 @@ namespace GameServices.Controllers {
       return NoContent();
     }
   }
-}
+

@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace GameServices.Repositories {
+namespace GameServices.Repositories;
 
   public class MongoDbItemsRepo : IInMemItemsRepo {
 
@@ -42,4 +42,3 @@ namespace GameServices.Repositories {
     }
 
   }
-}

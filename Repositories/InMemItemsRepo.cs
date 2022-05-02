@@ -1,6 +1,6 @@
 ﻿using GameServices.Entities;
 
-namespace GameServices.Repositories {
+namespace GameServices.Repositories;
 
   public class InMemItemsRepo : IInMemItemsRepo {
 
@@ -37,4 +37,3 @@ namespace GameServices.Repositories {
       await Task.CompletedTask;
     }
   }
-}

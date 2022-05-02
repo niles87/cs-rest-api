@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GameServices.Dtos {
+namespace GameServices.Dtos;
 
   public record UpdateItemDto {
     [Required]
@@ -10,4 +10,3 @@ namespace GameServices.Dtos {
     [Range(1, 1000)]
     public decimal Price { get; init; }
   }
-}

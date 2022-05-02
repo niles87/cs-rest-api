@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GameServices.Dtos {
+namespace GameServices.Dtos;
 
   public record LoginUserDto {
     [Required]
@@ -8,4 +8,3 @@ namespace GameServices.Dtos {
     [Required]
     public string Password { get; init; }
   }
-}

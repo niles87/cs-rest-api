@@ -4,7 +4,7 @@ using GameServices.Repositories;
 using GameServices.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GameServices.Controllers {
+namespace GameServices.Controllers;
   [Route("api/user")]
   [ApiController]
   public class PlayerController : ControllerBase {
@@ -43,4 +43,4 @@ namespace GameServices.Controllers {
       return existingUser.AsDto();
     }
   }
-}
+

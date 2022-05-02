@@ -1,4 +1,4 @@
-﻿namespace GameServices.Settings {
+﻿namespace GameServices.Settings;
 
   public class MongoDBSettings {
     public string Host { get; set; }
@@ -11,4 +11,3 @@
       } 
     }
   }
-}

@@ -2,7 +2,7 @@
 using GameServices.Utilities;
 using MongoDB.Driver;
 
-namespace GameServices.Repositories {
+namespace GameServices.Repositories;
 
   public class MongoDBUserRepo : IInMemUserRepo {
 
@@ -53,4 +53,3 @@ namespace GameServices.Repositories {
       return user;
     }
   }
-}

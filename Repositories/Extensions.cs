@@ -1,7 +1,7 @@
 ﻿using GameServices.Dtos;
 using GameServices.Entities;
 
-namespace GameServices {
+namespace GameServices;
   public static class Extensions {
     public static ItemDto AsDto(this Item item) {
       return new ItemDto {
@@ -21,4 +21,3 @@ namespace GameServices {
       };
     }
   }
-}

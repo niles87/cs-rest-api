@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace GameServices.Utilities {
+namespace GameServices.Utilities;
   public static class PasswordHash {
     public static string HashPassword(string password) {
       byte[] salt = new byte[16];
@@ -33,4 +33,3 @@ namespace GameServices.Utilities {
       return true;
     }
   }
-}

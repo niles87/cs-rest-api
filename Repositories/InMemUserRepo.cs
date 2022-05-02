@@ -1,7 +1,7 @@
 ﻿using GameServices.Entities;
 using GameServices.Utilities;
 
-namespace GameServices.Repositories {
+namespace GameServices.Repositories;
   public class InMemUserRepo : IInMemUserRepo {
 
     private readonly List<User> users = new() {
@@ -42,4 +42,3 @@ namespace GameServices.Repositories {
       return await Task.FromResult(user);
     }
   }
-}

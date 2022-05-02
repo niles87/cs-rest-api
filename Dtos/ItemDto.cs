@@ -1,4 +1,4 @@
-﻿namespace GameServices.Dtos {
+﻿namespace GameServices.Dtos;
 
   public record ItemDto {
     public Guid Id { get; init; }
@@ -7,4 +7,3 @@
     public DateTimeOffset CreatedDate { get; init; }
 
   }
-}
