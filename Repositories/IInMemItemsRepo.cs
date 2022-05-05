@@ -1,6 +1,6 @@
 ﻿using GameServices.Entities;
 
-namespace GameServices.Repositories {
+namespace GameServices.Repositories;
   public interface IInMemItemsRepo {
     Task<Item> GetItemAsync(Guid id);
     Task<IEnumerable<Item>> GetItemsAsync();
@@ -11,4 +11,3 @@ namespace GameServices.Repositories {
 
     Task DeleteItemAsync(Guid id);
   }
-}

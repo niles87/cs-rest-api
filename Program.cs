@@ -1,9 +1,11 @@
-using GameServices.Repositories;
+using GameServices.Services;
 using GameServices.Settings;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,17 +16,24 @@ BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String))
 builder.Services.AddControllers(options => {
   options.SuppressAsyncSuffixInActionNames = false;
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var mongoDbSettings = builder.Configuration.GetSection(nameof(MongoDBSettings)).Get<MongoDBSettings>();
 builder.Services.AddSingleton<IMongoClient>(serviceProvider => {
-  var settings = builder.Configuration.GetSection(nameof(MongoDBSettings)).Get<MongoDBSettings>();
-  return new MongoClient(settings.ConnectionString);
+  return new MongoClient(mongoDbSettings.ConnectionString);
 });
+builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<ItemService>();
 //builder.Services.AddSingleton<IInMemUserRepo, InMemUserRepo>();
-builder.Services.AddSingleton<IInMemUserRepo, MongoDBUserRepo>();
 // builder.Services.AddSingleton<IInMemItemsRepo, InMemItemsRepo>(); // in memory repo
-builder.Services.AddSingleton<IInMemItemsRepo, MongoDbItemsRepo>();
 builder.Services.AddEndpointsApiExplorer();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen();
+// Add health checks to Server as well as add AspNetCore.HealthChecks.MongoDb package to check MongoDB
+builder.Services.AddHealthChecks().AddMongoDb(
+  mongoDbSettings.ConnectionString,
+  name: "mongodb",
+  timeout: TimeSpan.FromSeconds(3.5),
+  tags: new[] { "ready" }
+  );
 
 var app = builder.Build();
 
@@ -39,5 +48,27 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/health/ready", new HealthCheckOptions {
+  Predicate = (check) => check.Tags.Contains("ready"),
+  // Add custom response object back for ready health check
+  ResponseWriter = async (context, report) => {
+    var result = JsonSerializer.Serialize(
+      new {
+        status = report.Status.ToString(),
+        checks = report.Entries.Select(entry => new {
+          name = entry.Key,
+          status = entry.Value.Status.ToString(),
+          exception = entry.Value.Exception != null ? entry.Value.Exception.Message : "none",
+          duration = entry.Value.Duration.ToString()
+        })
+      }
+      );
+    context.Response.ContentType = "application/json";
+    await context.Response.WriteAsync(result);
+  }
+});
+app.MapHealthChecks("/health/live", new HealthCheckOptions {
+  Predicate = (_) => false
+});
 
 app.Run();

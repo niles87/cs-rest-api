@@ -1,13 +1,13 @@
 ﻿using GameServices.Entities;
 
-namespace GameServices.Repositories {
+namespace GameServices.Repositories;
 
   public class InMemItemsRepo : IInMemItemsRepo {
 
     private readonly List<Item> items = new() {
-      new Item() { Id = Guid.NewGuid(), Name = "Potion", Price = 9, CreatedDate = DateTimeOffset.UtcNow },
-      new Item() { Id = Guid.NewGuid(), Name = "Sword", Price = 20, CreatedDate = DateTimeOffset.UtcNow },
-      new Item() { Id = Guid.NewGuid(), Name = "Bronze Shield", Price = 18, CreatedDate = DateTimeOffset.UtcNow },
+      new Item() { Id = Guid.NewGuid(), Name = "Potion", Price = 9, CreateDate = DateTimeOffset.UtcNow },
+      new Item() { Id = Guid.NewGuid(), Name = "Sword", Price = 20, CreateDate = DateTimeOffset.UtcNow },
+      new Item() { Id = Guid.NewGuid(), Name = "Bronze Shield", Price = 18, CreateDate = DateTimeOffset.UtcNow },
     };
 
 
@@ -37,4 +37,3 @@ namespace GameServices.Repositories {
       await Task.CompletedTask;
     }
   }
-}
