@@ -8,6 +8,7 @@ namespace GameServices;
         Id = item.Id,
         Name = item.Name,
         Price = item.Price,
+        Category = item.Category,
         CreateDate = item.CreateDate,
       };
     }

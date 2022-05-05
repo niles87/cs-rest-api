@@ -31,12 +31,19 @@ public class ItemsController : Controller {
     return item.AsDto();
   }
 
+
+  [HttpGet("search/{category}")]
+  public async Task<IEnumerable<ItemDto>> GetItemsByCategoryAsync(string category) {
+    return ( await repo.GetItemsByCategoryAsync(category) ).Select(item => item.AsDto());
+  }
+
   // Post /api/items
   [HttpPost]
   public async Task<ActionResult<ItemDto>> CreateItemAsync(CreateItemDto item) {
     Item newItem = new() {
       Name = item.Name,
       Price = item.Price,
+      Category = item.Category,
       CreateDate = DateTimeOffset.Now,
     };
 
@@ -47,18 +54,18 @@ public class ItemsController : Controller {
 
   // PUT /api/items/:id
   [HttpPut("{id}")]
-  public async Task<ActionResult> UpdateItemAsync(string id, UpdateItemDto item) {
+  public async Task<ActionResult<ItemDto>> UpdateItemAsync(string id, UpdateItemDto item) {
     var existingItem = await repo.GetItemAsync(id);
 
     if ( existingItem is null ) {
       return NotFound();
     }
 
-    Item newItem = new() { Name = item.Name, Price = item.Price, };
+    Item newItem = new() { Name = item.Name, Price = item.Price, Category = item.Category };
 
-    await repo.UpdateItemAsync(id, newItem);
+    Item? updatedItem = await repo.UpdateItemAsync(id, newItem);
 
-    return NoContent();
+    return updatedItem == null ? NoContent() : updatedItem.AsDto();
   }
 
   // DELETE /api/items/:id
@@ -74,5 +81,7 @@ public class ItemsController : Controller {
 
     return NoContent();
   }
+
+
 }
 
