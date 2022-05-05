@@ -1,5 +1,5 @@
 ﻿using GameServices.Dtos;
-using GameServices.Entities;
+using GameServices.Models;
 
 namespace GameServices;
   public static class Extensions {
@@ -8,16 +8,17 @@ namespace GameServices;
         Id = item.Id,
         Name = item.Name,
         Price = item.Price,
-        CreatedDate = item.CreatedDate,
+        CreateDate = item.CreateDate,
       };
     }
 
     public static UserDto AsDto(this User user) {
       return new UserDto {
         Id = user.Id,
-        Username = user.Username,
-        Email = user.Email,
-        JoinedDate = user.JoinedDate,
+        Username = user.UserName,
+        Email = user.UserEmail,
+        Wallet = user.Wallet,
+        Inventory = user.Inventory,
       };
     }
   }

@@ -1,4 +1,4 @@
-using GameServices.Repositories;
+using GameServices.Services;
 using GameServices.Settings;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MongoDB.Bson;
@@ -20,10 +20,10 @@ var mongoDbSettings = builder.Configuration.GetSection(nameof(MongoDBSettings)).
 builder.Services.AddSingleton<IMongoClient>(serviceProvider => {
   return new MongoClient(mongoDbSettings.ConnectionString);
 });
+builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<ItemService>();
 //builder.Services.AddSingleton<IInMemUserRepo, InMemUserRepo>();
-builder.Services.AddSingleton<IInMemUserRepo, MongoDBUserRepo>();
 // builder.Services.AddSingleton<IInMemItemsRepo, InMemItemsRepo>(); // in memory repo
-builder.Services.AddSingleton<IInMemItemsRepo, MongoDbItemsRepo>();
 builder.Services.AddEndpointsApiExplorer();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen();
