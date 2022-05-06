@@ -16,7 +16,11 @@ public class ItemService {
     return await _itemCollection.Find(_ => true).ToListAsync();
   }
 
-  // get a stored item
+  public async Task<IEnumerable<Item>> GetItemsByCategoryAsync(string categoryName) {
+    return await _itemCollection.Find(item => item.Category == categoryName).ToListAsync();
+  }
+
+  // get a single item item
   public async Task<Item?> GetItemAsync(string id) {
     return await _itemCollection.Find(item => item.Id == id).FirstOrDefaultAsync();
   }
@@ -29,7 +33,9 @@ public class ItemService {
   public async Task<Item?> UpdateItemAsync(string id, Item item) {
     FilterDefinitionBuilder<Item> filter = Builders<Item>.Filter;
     UpdateDefinitionBuilder<Item> update = Builders<Item>.Update;
-    return await _itemCollection.FindOneAndUpdateAsync(filter.Eq(item => item.Id, id), update.Set("Name", item.Name).Set("Price", item.Price), new FindOneAndUpdateOptions<Item> { ReturnDocument = ReturnDocument.After});
+    return await _itemCollection.FindOneAndUpdateAsync(filter.Eq(item => item.Id, id), 
+      update.Set("Name", item.Name).Set("Price", item.Price).Set("Category", item.Category),
+      new FindOneAndUpdateOptions<Item> { ReturnDocument = ReturnDocument.After});
   }
 
   public async Task DeleteItemAsync(string id) {
