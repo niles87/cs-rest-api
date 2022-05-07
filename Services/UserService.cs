@@ -19,7 +19,7 @@ public class UserService {
   }
 
   public async Task<User?> GetUserAsync(string id) {
-    return await _userCollection.Find(user => user.Id == id).FirstOrDefaultAsync(); 
+    return await _userCollection.Find(user => user.Id == id).FirstOrDefaultAsync();
   }
 
   public async Task<User?> LoginUserAsync(string email, string password) {
@@ -37,8 +37,38 @@ public class UserService {
     await _userCollection.InsertOneAsync(user);
   }
 
-  public async Task UpdateUserAsync(string id, User updatedUser) {
-    await _userCollection.ReplaceOneAsync(user => user.Id == id, updatedUser);
+  public async Task<User?> UpdateUserAsync(string id, User updatedUser) {
+    FilterDefinitionBuilder<User> filter = Builders<User>.Filter;
+    UpdateDefinitionBuilder<User> update = Builders<User>.Update;
+
+    User user = await GetUserAsync(id);
+
+    if ( user == null ) {
+      return null;
+    }
+
+    decimal value = updatedUser.Wallet + user.Wallet;
+
+    return await _userCollection.FindOneAndUpdateAsync(filter.Eq(user=>user.Id, id), 
+      update.Set("UserName", updatedUser.UserName).Set("UserEmail", updatedUser.UserEmail).Set("Wallet", value), 
+      new FindOneAndUpdateOptions<User, User> { ReturnDocument = ReturnDocument.After });
+  }
+
+  public async Task<User?> AddToUserInventoryAsync(string id, Item item) {
+    FilterDefinitionBuilder<User> filter = Builders<User>.Filter;
+    UpdateDefinitionBuilder<User> update = Builders<User>.Update;
+    return await _userCollection.FindOneAndUpdateAsync(filter.Eq(user => user.Id, id),
+      update.Push("Inventory.Items", item),
+      new FindOneAndUpdateOptions<User, User?> { ReturnDocument = ReturnDocument.After });
+  }
+
+  public async Task<User?> RemoveFromUserInventoryAsync(string id, string itemId) {
+    FilterDefinitionBuilder<User> filter = Builders<User>.Filter;
+    UpdateDefinitionBuilder<User> update = Builders<User>.Update;
+    FilterDefinitionBuilder<Item> itemFilter = Builders<Item>.Filter;
+    return await _userCollection.FindOneAndUpdateAsync(filter.Eq(user => user.Id, id),
+      update.PullFilter("Inventory.Items", itemFilter.Eq(exItem => exItem.Id, itemId)),
+      new FindOneAndUpdateOptions<User, User?> { ReturnDocument = ReturnDocument.After });
   }
 
   public async Task DeleteUserAsync(string id) {

@@ -6,7 +6,8 @@
 }
 <title>@ViewBag.Title</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<div class="container bg-light">
+<div class="min-vw-100 min-vh-100 bg-light">
+  <div class="container">
   <header class="row">
     <h1>@ViewBag.Welcome</h1>
   </header>
@@ -143,7 +144,9 @@
             username : string,
             email : string,
             wallet : float,
-            inventory : [{Item}]
+            inventory : {
+                items: [{Item}]
+              }
             }
           </td>
         </tr>
@@ -164,7 +167,94 @@
             username : string,
             email : string,
             wallet : float,
-            inventory : [{Item}]
+            inventory : {
+                items: [{Item}]
+              }
+            }
+          </td>
+        </tr>
+        <tr>
+          <td>
+            /api/user/remove
+          </td>
+          <td style="background-color:@ViewBag.grey">POST</td>
+          <td>
+            {
+             email : string,
+             password : string
+            }
+          </td>
+          <td>
+            None
+          </td>
+        </tr>
+        <tr>
+          <td>
+            /api/user/update/:id
+          </td>
+          <td style="background-color:@ViewBag.grey">POST</td>
+          <td>
+            {
+             email : string,
+             username : string,
+             wallet : float
+            }
+          </td>
+          <td>
+            {
+            id : string,
+            username : string,
+            email : string,
+            wallet : float,
+            inventory : {
+                items: [{Item}]
+              }
+            }
+          </td>
+        </tr>
+        <tr>
+          <td>
+            /api/user/inventory/:id/add/
+          </td>
+          <td style="background-color:@ViewBag.grey">POST</td>
+          <td>
+            {
+            id : string,
+            name : string,
+            price : float,
+            category : string,
+            createDate : string
+            }
+          </td>
+          <td>
+            {
+            id : string,
+            username : string,
+            email : string,
+            wallet : float,
+            inventory : {
+                items: [{Item}]
+              }
+            }
+          </td>
+        </tr>
+        <tr>
+          <td>
+            /api/user/inventory/:id/remove/:itemId
+          </td>
+          <td style="background-color:@ViewBag.grey">POST</td>
+          <td>
+              None
+          </td>
+          <td>
+            {
+            id : string,
+            username : string,
+            email : string,
+            wallet : float,
+            inventory : {
+                items: [{Item}]
+              }
             }
           </td>
         </tr>
@@ -176,4 +266,6 @@
   </footer>
 
 </div>
+</div>
+
 
