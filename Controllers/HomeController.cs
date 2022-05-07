@@ -8,7 +8,7 @@ public class HomeController : Controller {
   [HttpGet]
   public IActionResult Index() {
     ViewBag.Title = "Home";
-    ViewBag.Welcome = "Hello World!";
+    ViewBag.Welcome = "Game Services .NET 6";
     ViewBag.Year = DateTime.Now.Year;
     return View();
   }
