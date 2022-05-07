@@ -12,11 +12,17 @@ var builder = WebApplication.CreateBuilder(args);
 BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
 BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
 
+
 // Add services to the container.
+// NEED this line to register controllers with their associated veiws
+builder.Services.AddControllersWithViews();
+
 builder.Services.AddControllers(options => {
   options.SuppressAsyncSuffixInActionNames = false;
 });
+
 var mongoDbSettings = builder.Configuration.GetSection(nameof(MongoDBSettings)).Get<MongoDBSettings>();
+
 builder.Services.AddSingleton<IMongoClient>(serviceProvider => {
   return new MongoClient(mongoDbSettings.ConnectionString);
 });
