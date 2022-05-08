@@ -9,9 +9,9 @@ namespace GameServices.Controllers;
 [ApiController]
 public class PlayerController : ControllerBase {
 
-  private readonly UserService repo;
+  private readonly IUserService repo;
 
-  public PlayerController(UserService repo) {
+  public PlayerController(IUserService repo) {
     this.repo = repo;
   }
 

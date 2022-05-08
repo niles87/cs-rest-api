@@ -26,8 +26,8 @@ var mongoDbSettings = builder.Configuration.GetSection(nameof(MongoDBSettings)).
 builder.Services.AddSingleton<IMongoClient>(serviceProvider => {
   return new MongoClient(mongoDbSettings.ConnectionString);
 });
-builder.Services.AddSingleton<UserService>();
-builder.Services.AddSingleton<ItemService>();
+builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IItemService, ItemService>();
 //builder.Services.AddSingleton<IInMemUserRepo, InMemUserRepo>();
 // builder.Services.AddSingleton<IInMemItemsRepo, InMemItemsRepo>(); // in memory repo
 builder.Services.AddEndpointsApiExplorer();
