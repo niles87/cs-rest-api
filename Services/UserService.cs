@@ -3,7 +3,7 @@ using GameServices.Utilities;
 using MongoDB.Driver;
 
 namespace GameServices.Services;
-public class UserService {
+public class UserService : IUserService {
   private const string databaseName = "gameservices";
   private const string collectionName = "users";
   private readonly IMongoCollection<User> _userCollection;

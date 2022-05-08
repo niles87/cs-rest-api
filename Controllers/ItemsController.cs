@@ -8,9 +8,9 @@ namespace GameServices.Controllers;
 [Route("api/items")]
 public class ItemsController : Controller {
 
-  private readonly ItemService repo;
+  private readonly IItemService repo;
 
-  public ItemsController(ItemService repo) {
+  public ItemsController(IItemService repo) {
     this.repo = repo;
   }
 
@@ -65,7 +65,7 @@ public class ItemsController : Controller {
 
     Item? updatedItem = await repo.UpdateItemAsync(id, newItem);
 
-    return updatedItem == null ? NoContent() : updatedItem.AsDto();
+    return updatedItem == null ? NotFound() : updatedItem.AsDto();
   }
 
   // DELETE /api/items/:id

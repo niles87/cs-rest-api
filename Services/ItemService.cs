@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 
 namespace GameServices.Services;
-public class ItemService {
+public class ItemService : IItemService {
   private const string databaseName = "gameservices";
   private const string collectionName = "items";
   private readonly IMongoCollection<Item> _itemCollection;
